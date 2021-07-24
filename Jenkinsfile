@@ -1,34 +1,44 @@
 pipeline {
+    environment {
+        registry = '29207/varundocker0077'
+		registryCredential = 'dockerhub_id'
+        dockerImage = ''
+	}
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('code Checkout') {
             steps {
                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github', url: 'git@github.com:reddy0077/jenkinsDeclarativepipeline.git']]])
                sh "ls -al"
             }       
         }
-        stage("Build") {
+        stage("Code Build") {
             steps {
-                echo "Some code compilation here..."
-                echo "${env.BRANCH_NAME}"
-                sh "ls -al"
+                echo "compiling java code "
+				sh "rm -f *.war"
+                sh "./build.sh"
+				sh "mv ROOT.war ROOT${env.BUILD_ID}.war"
+				sh "ls -al"
             }
         }
 
-        stage("Test") {
+        stage("Uploading artifacts to S3") {
             steps {
-                echo "Some tests execution here..."
-                echo "${env.BUILD_NUMBER}"
+                echo "Uploading artifacts to S3"
+                s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'uploadartifacts', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: false, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: '*.war', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 's3 artifact copy', userMetadata: []
                 
             }
         }
         
-        stage("Deploy") {
+        stage("Create Docker Image and push") {
             steps {
-                echo "Some tests execution here..."
-                echo "${env.BUILD_ID}"
-                
+                script {  
+                  	dockerImage = docker.build registry + ":v$BUILD_NUMBER"
+                    docker.withRegistry('', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
             }
         }
         
@@ -41,5 +51,4 @@ pipeline {
             }
         }
     }
-}
-
+ }
