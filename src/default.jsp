@@ -31,6 +31,7 @@
       <h1 class="cover-heading">Learning Declarative pipeline</h1>
       <p class="lead">A safety resource for snake haters.</p>
       <!--Intro -->
+      <div class="tenor-gif-embed" data-postid="12083393" data-share-method="host" data-width="100%" data-aspect-ratio="1.335820895522388"><a href="https://tenor.com/view/brahmi-telugu-telugu-comedy-gif-12083393">Brahmi Telugu GIF</a> from <a href="https://tenor.com/search/brahmi-gifs">Brahmi GIFs</a></div><script type="text/javascript" async src="https://tenor.com/embed.js"></script>
       <h2>Do you or a loved one hate snakes?</h2>
       <p>Snakes are a controversial topic. Some people love'em, some people just can't stand them. How do you get by in a world full of snakes?</p>
       <h3 class="flyout toggle">Love snakes? <a href="#" onclick="switchto('love');return false;">Click Here</a></h3>
