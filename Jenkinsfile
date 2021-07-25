@@ -53,7 +53,7 @@ pipeline {
 		stage("Deploy Image To DockerHost") {
             steps {
                 sh "docker -H tcp://192.168.0.202:2375 stop prodwebapp1 || true"
-                sh "docker -H tcp://192.168.0.202:2375 run --rm -dit --name prodwebapp1 --hostname prodwebapp1 -p 8000:8080 29207/varundocker0077:${BUILD_NUMBER}"
+                sh "docker -H tcp://192.168.0.202:2375 run --rm -dit --name prodwebapp1 --hostname prodwebapp1 -p 8000:8080 29207/varundocker0077:v${BUILD_NUMBER}"
                 
             }
         }
