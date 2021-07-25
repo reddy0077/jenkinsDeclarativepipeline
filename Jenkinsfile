@@ -19,6 +19,7 @@ pipeline {
 				sh "rm -f *.war"
                 sh "./build.sh"
 				sh "mv ROOT.war ROOT${env.BUILD_ID}.war"
+				sh "cp ROOT${env.BUILD_ID}.war mywebapp.war"
 				sh "ls -al"
             }
         }
@@ -42,11 +43,10 @@ pipeline {
             }
         }
         
-        stage("Verify") {
+        stage("deploy war to tomcat server") {
             steps {
-                echo "Some tests execution here..."
-                echo "${env.JENKINS_HOME}"
-                echo "1"
+                sh "ssh root@ip-192-168-0-176 rm -f /var/lib/tomcat8/webapps/mywebapp.war"
+				sh "scp mywebapp.war root@ip-192-168-0-176:/var/lib/tomcat8/webapps"
                 
             }
         }
