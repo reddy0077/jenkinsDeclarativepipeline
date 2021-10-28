@@ -24,3 +24,4 @@ fi
 mv ROOT.war ../
 echo .
 echo "SUCCESS"
+echo "helo"
